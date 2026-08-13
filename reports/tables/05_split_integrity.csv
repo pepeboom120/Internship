@@ -1,0 +1,9 @@
+split_name,subject,record_count,duplicate_groups
+development,biology,544,542
+development,chemistry,970,946
+development,math,1155,1127
+development,physics,1109,1101
+test,biology,90,90
+test,chemistry,162,158
+test,math,193,187
+test,physics,185,183

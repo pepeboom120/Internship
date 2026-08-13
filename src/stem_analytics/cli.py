@@ -11,6 +11,7 @@ import pandas as pd
 from stem_analytics.config import load_config
 from stem_analytics.data_ingestion import fetch_and_save
 from stem_analytics.data_validation import validate_and_save
+from stem_analytics.database import build_database_and_export
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -23,6 +24,8 @@ def build_parser() -> argparse.ArgumentParser:
     fetch.add_argument("--config", type=Path, default=Path("configs/project.yaml"))
     validate = subparsers.add_parser("validate", help="Validate and split source records.")
     validate.add_argument("--config", type=Path, default=Path("configs/project.yaml"))
+    database = subparsers.add_parser("build-db", help="Build SQLite and export SQL tables.")
+    database.add_argument("--config", type=Path, default=Path("configs/project.yaml"))
     return parser
 
 
@@ -43,6 +46,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             f"Validated {manifest['clean_rows']} rows; excluded "
             f"{manifest['excluded_rows']}; crossing groups "
             f"{manifest['crossing_duplicate_groups']}"
+        )
+    elif args.command == "build-db":
+        config = load_config(args.config)
+        controlled = pd.read_parquet(config.paths.processed_data)
+        result = build_database_and_export(controlled, config)
+        print(
+            f"Loaded {result['questions_loaded']} questions and exported "
+            f"{result['queries_exported']} SQL tables"
         )
     else:
         parser.print_help()
