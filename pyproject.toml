@@ -21,6 +21,7 @@ dependencies = [
   "reportlab>=4.2,<5",
   "scikit-learn>=1.6,<2",
   "seaborn>=0.13,<1",
+  "truststore>=0.10,<1",
 ]
 
 [project.optional-dependencies]
