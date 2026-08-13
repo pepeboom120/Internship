@@ -1,0 +1,16 @@
+page_number,status,issues,resolution
+1,pass,,Title page visually verified
+2,pass,,TOC rebuilt as fixed-width table and reverified
+3,pass,,Text figure caption header and footer verified
+4,pass,,Text header and footer verified
+5,pass,,Text header and footer verified
+6,pass,,Heatmap labels caption and margins verified
+7,pass,,Text header and footer verified
+8,pass,,Fold plot labels caption and margins verified
+9,pass,,Confusion matrix labels caption and margins verified
+10,pass,,Error-slice chart labels caption and margins verified
+11,pass,,Learning curve labels caption and margins verified
+12,pass,,Caption inset corrected and reverified
+13,pass,,Text header and footer verified
+14,pass,,Text header and footer verified
+15,pass,,Metric table borders alignment and footer verified
