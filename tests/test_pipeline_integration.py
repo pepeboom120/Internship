@@ -1,3 +1,4 @@
+import tomllib
 from pathlib import Path
 
 from stem_analytics.cli import _stage_outputs, build_parser
@@ -21,3 +22,14 @@ def test_changed_input_invalidates_stage_metadata(tmp_path: Path) -> None:
 def test_stage_contracts_include_public_report() -> None:
     config = load_config(Path("configs/project.yaml"))
     assert Path("docs/final_report.md") in _stage_outputs("report", config)
+
+
+def test_public_release_is_version_1_0_0() -> None:
+    pyproject = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
+    assert pyproject["project"]["version"] == "1.0.0"
+
+
+def test_release_notes_report_verified_result_and_boundary() -> None:
+    release_notes = Path("docs/release_notes_v1.0.0.md").read_text(encoding="utf-8")
+    assert "0.8755" in release_notes
+    assert "offline prototype" in release_notes.lower()
