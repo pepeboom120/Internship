@@ -1,0 +1,5 @@
+claim,displayed_value,authoritative_value,absolute_difference,tolerance,status
+README macro-F1,0.8754624935945594,0.8754624935945594,0.0,1e-09,pass
+README accuracy,0.8777777777777778,0.8777777777777778,0.0,1e-09,pass
+model comparison final macro-F1,0.8754624935945594,0.8754624935945594,0.0,1e-09,pass
+per-class support total,630.0,630.0,0.0,1e-09,pass

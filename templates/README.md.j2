@@ -6,7 +6,7 @@ An evidence-grounded feasibility study that classifies English STEM benchmark qu
 
 ## Result
 
-**Conditional go — validated offline prototype.** Locked LinearSVC: macro-F1 **0.8755** (95% CI 0.8471–0.8996), accuracy **0.8778**, on 630 final-test questions.
+**Conditional go — {{ capability }}.** Locked LinearSVC: macro-F1 **{{ '%.4f'|format(readme_metrics.macro_f1) }}** (95% CI {{ '%.4f'|format(readme_metrics.ci_lower) }}–{{ '%.4f'|format(readme_metrics.ci_upper) }}), accuracy **{{ '%.4f'|format(readme_metrics.accuracy) }}**, on {{ metrics.final_test_rows }} final-test questions.
 
 ```mermaid
 flowchart LR
@@ -33,7 +33,7 @@ flowchart LR
 
 ## Findings and limits
 
-Chemistry is the weakest class (F1 0.8391). Source and subject are confounded, so cross-source generalization remains unverified. This is not evidence about student behavior or production readiness.
+Chemistry is the weakest class (F1 {{ '%.4f'|format(metrics.per_class.chemistry.f1) }}). Source and subject are confounded, so cross-source generalization remains unverified. This is not evidence about student behavior or production readiness.
 
 ## Repository map
 
@@ -53,4 +53,4 @@ python -m venv .venv
 
 Individual stages: `fetch`, `validate`, `build-db`, `analyze`, `train`, `evaluate`, `diagnose`, `report`.
 
-Dataset: `TIGER-Lab/MMLU-Pro` at pinned revision `b189ec765aa7ed75c8acfea42df31fdae71f97be`; review upstream terms before redistribution. Code is MIT licensed. See the [full report](docs/final_report.md) and [reproducibility guide](docs/reproducibility.md).
+Dataset: `{{ source.dataset_name }}` at pinned revision `{{ source.dataset_revision }}`; review upstream terms before redistribution. Code is MIT licensed. See the [full report](docs/final_report.md) and [reproducibility guide](docs/reproducibility.md).

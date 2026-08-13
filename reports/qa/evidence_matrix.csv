@@ -1,0 +1,8 @@
+claim,claim_priority,displayed_value,source_value,authoritative_source,source_priority,transformation,tolerance,verification_status,discrepancy_note
+Final macro-F1,major,0.8754624935945594,0.8754624935945594,artifacts/metrics/final_test_metrics.json,1,none,1e-09,verified,
+Final accuracy,major,0.8777777777777778,0.8777777777777778,artifacts/metrics/final_test_metrics.json,1,none,1e-09,verified,
+Macro-F1 interval lower,major,0.8471219325342595,0.8471219325342595,artifacts/metrics/final_test_metrics.json,1,none,1e-09,verified,
+Macro-F1 interval upper,major,0.899644551634142,0.899644551634142,artifacts/metrics/final_test_metrics.json,1,none,1e-09,verified,
+Selected-model CV macro-F1,major,0.8806734297302619,0.8806734297302619,artifacts/runs/4881283f146d/selection_decision.json,3,none,1e-09,verified,
+Controlled rows,major,4408.0,4408.0,artifacts/manifests/validation_manifest.json,4,none,1e-09,verified,
+Cross-split duplicate groups,major,0.0,0.0,artifacts/manifests/validation_manifest.json,4,none,1e-09,verified,
