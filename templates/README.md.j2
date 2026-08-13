@@ -1,12 +1,23 @@
-# STEM Learning Analytics — End-to-End ML Workflow
+# STEM Learning Analytics - End-to-End ML Workflow
 
-An evidence-grounded feasibility study that classifies English STEM benchmark questions into mathematics, physics, chemistry, or biology using a leakage-safe TF-IDF + linear-model workflow.
+[![CI](https://github.com/pepeboom120/Internship/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pepeboom120/Internship/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/pepeboom120/Internship?display_name=tag)](https://github.com/pepeboom120/Internship/releases)
+[![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12-3776AB)](pyproject.toml)
+[![License](https://img.shields.io/badge/License-MIT-2EA44F)](LICENSE)
 
-這是一個可重現的端到端機器學習作品集：重點不是前端 demo，而是資料治理、SQL、去重與防洩漏切分、超參數調整、一次性測試集評估、錯誤診斷與限制分析。
+An evidence-grounded feasibility study that classifies English STEM benchmark questions into mathematics, physics, chemistry, or biology using a leakage-safe TF-IDF and linear-model workflow.
+
+這是一個可重現的端到端機器學習作品集。重點不是前端 demo，而是資料治理、SQL、去重與防洩漏切分、超參數調整、一次性測試集評估、錯誤診斷與限制分析。
 
 ## Result
 
-**Conditional go — {{ capability }}.** Locked LinearSVC: macro-F1 **{{ '%.4f'|format(readme_metrics.macro_f1) }}** (95% CI {{ '%.4f'|format(readme_metrics.ci_lower) }}–{{ '%.4f'|format(readme_metrics.ci_upper) }}), accuracy **{{ '%.4f'|format(readme_metrics.accuracy) }}**, on {{ metrics.final_test_rows }} final-test questions.
+**Conditional go - {{ claims.capability_title }}.** The locked {{ claims.model_name }} achieved:
+
+- **Macro-F1: {{ claims.macro_f1 }}** (95% stratified bootstrap CI {{ claims.ci_lower }}-{{ claims.ci_upper }})
+- **Accuracy: {{ claims.accuracy }}** ({{ claims.correct_predictions }}/{{ claims.test_rows }} final-test predictions correct)
+- **Grouped-CV macro-F1: {{ claims.cv_macro_f1 }} +/- {{ claims.cv_std }}** before the final test was opened
+
+The model is suitable as an offline four-subject routing prototype. It is not evidence of production readiness, student behavior, calibrated confidence, or guaranteed cross-source generalization.
 
 ```mermaid
 flowchart LR
@@ -23,34 +34,59 @@ flowchart LR
 ![Confusion matrix](reports/figures/07_confusion_matrix.png)
 ![Learning curve](reports/figures/12_learning_curve.png)
 
-## Technical decisions
+## Review This Project in Five Minutes
+
+1. Read the [one-page project brief](docs/project_brief.pdf) for the problem, workflow, results, and limits.
+2. Inspect the persisted [model selection decision](artifacts/runs/{{ metrics.run_id }}/selection_decision.json) to see how the final model was locked without test access.
+3. Review the confusion matrix and [error-slice table](reports/tables/error_slices.csv), especially the weaker chemistry class and short-question errors.
+4. Read the [capability boundaries](docs/limitation_register.md) and the explicit `not_feasible` source-holdout result.
+5. Run `stem-analytics run-all --config configs/project.yaml` to see the visible cache and reproducible stage contracts.
+
+For a spoken walkthrough, use the [interview guide](docs/interview_guide.md). Resume-ready descriptions are in [resume assets](docs/resume_assets.md).
+
+## Key Technical Decisions
 
 - Only normalized question text is a feature; answers and explanations are prohibited.
-- Exact duplicates are removed and duplicate groups cannot cross the split.
-- TF-IDF is fitted inside each grouped CV fold; macro-F1 drives selection.
-- The final test set is evaluated once after locking the model.
-- LinearSVC margins are not presented as calibrated confidence.
+- {{ claims.excluded_rows }} exact duplicates were removed and {{ claims.crossing_groups }} duplicate groups cross the final split.
+- TF-IDF is fitted inside each grouped CV fold; macro-F1 drives selection across {{ claims.parameter_configurations }} candidate configurations.
+- The final test set is evaluated once after the selection decision and hashes are persisted.
+- LinearSVC margins are not presented as calibrated probabilities.
+- SQL, manifests, metrics, figures, Markdown, and PDFs derive from controlled artifacts.
 
-## Findings and limits
+## Findings and Limits
 
-Chemistry is the weakest class (F1 {{ '%.4f'|format(metrics.per_class.chemistry.f1) }}). Source and subject are confounded, so cross-source generalization remains unverified. This is not evidence about student behavior or production readiness.
+- {{ claims.weakest_class }} is the weakest class at F1 {{ claims.weakest_f1 }}; {{ claims.strongest_class }} is strongest at {{ claims.strongest_f1 }}.
+- Questions below 100 characters have a {{ claims.short_question_error_rate_percent }} error rate.
+- Source and subject are strongly confounded, so the predeclared cross-source holdout is not feasible with this dataset.
+- The learning curve continues to improve with additional development data, supporting targeted data collection rather than unsupported model complexity.
 
-## Repository map
-
-- `src/stem_analytics/`: pipeline code
-- `sql/`: schema and named analyses
-- `reports/`: generated figures, tables, and QA registers
-- `docs/final_report.md` and `docs/final_report.pdf`: full report
-- `tests/`: unit and fixture integration tests
-
-## Local quick start
+## Local Reproduction
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python -m pip install -e ".[dev]"
 .\.venv\Scripts\stem-analytics run-all --config configs/project.yaml
+.\.venv\Scripts\python -m pytest -q
 ```
 
-Individual stages: `fetch`, `validate`, `build-db`, `analyze`, `train`, `evaluate`, `diagnose`, `report`.
+Individual stages: `fetch`, `validate`, `build-db`, `analyze`, `train`, `evaluate`, `diagnose`, and `report`.
 
-Dataset: `{{ source.dataset_name }}` at pinned revision `{{ source.dataset_revision }}`; review upstream terms before redistribution. Code is MIT licensed. See the [full report](docs/final_report.md) and [reproducibility guide](docs/reproducibility.md).
+## Project Evidence
+
+- [One-page project brief](docs/project_brief.pdf)
+- [Full Markdown report](docs/final_report.md)
+- [Verified 15-page technical report](docs/final_report.pdf)
+- [Reproducibility guide](docs/reproducibility.md)
+- [Evidence matrix](reports/qa/evidence_matrix.csv)
+- [Numerical consistency register](reports/qa/numerical_consistency_register.csv)
+- [PDF QA report](reports/qa/pdf_qa_report.md)
+
+## Repository Map
+
+- `src/stem_analytics/`: importable pipeline and CLI code
+- `sql/`: constrained schema and ten named analytical queries
+- `reports/`: generated figures, tables, and QA registers
+- `artifacts/`: public-safe manifests, locked metrics, and run decisions
+- `tests/`: unit, integration, PDF, and clean-room verification tests
+
+Dataset: `{{ source.dataset_name }}` at pinned revision `{{ source.dataset_revision }}` under the upstream license note. Raw data, SQLite, predictions, and model binaries rebuild locally and are not committed. Code is MIT licensed.

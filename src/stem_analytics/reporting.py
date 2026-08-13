@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -47,6 +48,70 @@ def build_report_context(
         "tables": tables,
         "readme_metrics": readme_metrics,
         "capability": "validated offline prototype",
+        "project_root": root.resolve(),
+    }
+
+
+def presentation_claims(context: dict[str, Any]) -> dict[str, str | int | float]:
+    """Format interviewer-facing claims from authoritative project evidence."""
+    root = Path(context["project_root"])
+    metrics = context["metrics"]
+    validation = context["validation"]
+    selection = context["selection"]
+    per_class = context["tables"]["per_class_metrics"]
+    strongest = per_class.sort_values("f1", ascending=False).iloc[0]
+    weakest = per_class.sort_values("f1", ascending=True).iloc[0]
+    error_slices = context["tables"]["error_slices"]
+    short_error = error_slices.loc[
+        (error_slices["slice_type"] == "length_band")
+        & (error_slices["slice_value"] == "<100"),
+        "error_rate",
+    ].iloc[0]
+    grid = context["config"]["models"]
+    parameter_configurations = (
+        len(grid["tfidf_ngram_ranges"])
+        * len(grid["tfidf_min_df"])
+        * len(grid["c_values"])
+        * len(grid["class_weights"])
+        * 2
+    )
+    test_pattern = re.compile(r"^\s*def test_", re.MULTILINE)
+    test_count = sum(
+        len(test_pattern.findall(path.read_text(encoding="utf-8")))
+        for path in (root / "tests").glob("test_*.py")
+    )
+    pdf_audit = root / "reports" / "qa" / "pdf_page_audit.csv"
+    pdf_pages = len(pd.read_csv(pdf_audit)) if pdf_audit.exists() else 0
+    return {
+        "model_name": str(metrics["model_name"]),
+        "macro_f1": f"{metrics['macro_f1']:.4f}",
+        "accuracy": f"{metrics['accuracy']:.4f}",
+        "weighted_f1": f"{metrics['weighted_f1']:.4f}",
+        "ci_lower": f"{metrics['bootstrap_macro_f1_95_ci']['lower']:.4f}",
+        "ci_upper": f"{metrics['bootstrap_macro_f1_95_ci']['upper']:.4f}",
+        "cv_macro_f1": f"{selection['cv_macro_f1_mean']:.4f}",
+        "cv_std": f"{selection['cv_macro_f1_std']:.4f}",
+        "source_rows": int(validation["source_rows"]),
+        "controlled_rows": int(validation["clean_rows"]),
+        "excluded_rows": int(validation["excluded_rows"]),
+        "development_rows": int(validation["split_counts"]["development"]),
+        "test_rows": int(metrics["final_test_rows"]),
+        "correct_predictions": round(metrics["accuracy"] * metrics["final_test_rows"]),
+        "crossing_groups": int(validation["crossing_duplicate_groups"]),
+        "parameter_configurations": int(parameter_configurations),
+        "strongest_class": str(strongest["subject"]).title(),
+        "strongest_f1": f"{strongest['f1']:.4f}",
+        "weakest_class": str(weakest["subject"]).title(),
+        "weakest_f1": f"{weakest['f1']:.4f}",
+        "short_question_error_rate_percent": f"{short_error * 100:.1f}%",
+        "sql_query_count": len(list((root / "sql" / "analysis").glob("*.sql"))),
+        "test_count": test_count,
+        "report_pdf_pages": pdf_pages,
+        "bootstrap_iterations": int(
+            metrics["bootstrap_macro_f1_95_ci"]["iterations"]
+        ),
+        "improvement_over_majority": f"{metrics['macro_f1'] / context['tables']['model_comparison'].iloc[0]['grouped_cv_macro_f1_mean']:.1f}x",
+        "capability_title": str(context["capability"]).title(),
     }
 
 
@@ -145,6 +210,7 @@ def render_markdown_report(
 def generate_report(config: ProjectConfig, root: Path = Path(".")) -> dict[str, Any]:
     """Generate report, README, and QA registers from one verified context."""
     context = build_report_context(config, root)
+    context["claims"] = presentation_claims(context)
     evidence = build_evidence_matrix(context)
     consistency = verify_numerical_consistency(context)
     qa_dir = root / config.paths.reports / "qa"
@@ -171,6 +237,16 @@ def generate_report(config: ProjectConfig, root: Path = Path(".")) -> dict[str, 
     render_markdown_report(
         context, root / "templates" / "README.md.j2", root / "README.md"
     )
+    for template_name, output_name in (
+        ("project_brief.md.j2", "project_brief.md"),
+        ("interview_guide.md.j2", "interview_guide.md"),
+        ("resume_assets.md.j2", "resume_assets.md"),
+    ):
+        render_markdown_report(
+            context,
+            root / "templates" / template_name,
+            root / "docs" / output_name,
+        )
     return {
         "capability": context["capability"],
         "evidence_rows": len(evidence),
