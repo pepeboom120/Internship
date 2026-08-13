@@ -1,0 +1,5 @@
+subject,n,error_count,error_rate
+chemistry,162,29,0.179
+physics,185,26,0.1405
+biology,90,12,0.1333
+math,193,10,0.0518

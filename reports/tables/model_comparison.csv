@@ -1,0 +1,4 @@
+model_name,grouped_cv_macro_f1_mean,grouped_cv_macro_f1_std,locked_final_model,final_test_macro_f1,test_evaluation_policy
+majority_baseline,0.1170687497302662,5.814247803420928e-05,False,not_evaluated,not evaluated to avoid test-set model selection
+logistic_regression,0.8715237321841094,0.0137928743252503,False,not_evaluated,not evaluated to avoid test-set model selection
+linear_svc,0.8806734297302619,0.0170983976138482,True,0.8754624935945594,one-time locked confirmation

@@ -1,0 +1,79 @@
+# End-to-End STEM Subject Classification
+
+## 1. Executive Summary
+
+This study tests whether question text alone can classify English STEM benchmark questions as mathematics, physics, chemistry, or biology. The locked {{ metrics.model_name }} reached **macro-F1 {{ '%.4f'|format(metrics.macro_f1) }}** (95% stratified bootstrap CI {{ '%.4f'|format(metrics.bootstrap_macro_f1_95_ci.lower) }}–{{ '%.4f'|format(metrics.bootstrap_macro_f1_95_ci.upper) }}) and accuracy {{ '%.4f'|format(metrics.accuracy) }} on {{ metrics.final_test_rows }} isolated questions. The result supports a **conditional feasibility decision** as a {{ capability }}, not production deployment.
+
+## 2. Problem and Decision
+
+The practical question is whether a leakage-controlled classical ML pipeline can route a question to one of four subject queues. Success means materially beating the majority baseline while identifying failure modes and operational limits.
+
+## 3. Data Source and Governance
+
+The source is `{{ source.dataset_name }}` revision `{{ source.dataset_revision }}`. {{ source.selected_rows }} source rows were selected. Raw records, answer choices, answers, and explanations are not model features and are not committed.
+
+## 4. Data Validation
+
+Validation retained {{ validation.clean_rows }} of {{ validation.source_rows }} rows and excluded {{ validation.excluded_rows }} exact duplicates. It produced {{ validation.duplicate_groups }} duplicate groups and verified **{{ validation.crossing_duplicate_groups }} crossing groups** between development and test.
+
+## 5. Exploratory Analysis
+
+![Class distribution](../reports/figures/01_subject_distribution.png)
+
+Biology has the smallest controlled class. Source composition is strongly tied to subject, which creates a shortcut and external-validity risk.
+
+## 6. SQL Analytical Layer
+
+SQLite stores controlled questions, model runs, and predictions with foreign keys and label constraints. Ten named SQL queries reproduce distributions, quality checks, error slices, and confusion pairs.
+
+## 7. Leakage Control
+
+The final test fold was isolated before tuning. Exact duplicates were removed, near-duplicate groups were kept within a single split, TF-IDF was fitted inside each pipeline fold, and hyperparameters were selected using five-fold `StratifiedGroupKFold` only.
+
+## 8. Modeling and Hyperparameter Tuning
+
+The majority baseline, TF-IDF + Logistic Regression, and TF-IDF + LinearSVC were compared with macro-F1. LinearSVC was locked at development CV macro-F1 {{ '%.4f'|format(selection.cv_macro_f1_mean) }} ± {{ '%.4f'|format(selection.cv_macro_f1_std) }} using `C={{ selection.best_params['classifier__C'] }}`, `min_df={{ selection.best_params['tfidf__min_df'] }}`, and n-grams {{ selection.best_params['tfidf__ngram_range'] }}.
+
+![Model comparison](../reports/figures/06_model_comparison.png)
+
+## 9. Evaluation Definitions
+
+Macro-F1 gives each class equal weight. Precision measures how often a predicted class is correct; recall measures how much of a true class is recovered; weighted-F1 weights class F1 by support. The confusion matrix counts every true/predicted pair. The bootstrap interval resamples within each true class to preserve class composition.
+
+## 10. Final-Test Results
+
+The locked model achieved macro-F1 **{{ '%.4f'|format(metrics.macro_f1) }}**, weighted-F1 {{ '%.4f'|format(metrics.weighted_f1) }}, and accuracy {{ '%.4f'|format(metrics.accuracy) }}. The 95% interval is {{ '%.4f'|format(metrics.bootstrap_macro_f1_95_ci.lower) }}–{{ '%.4f'|format(metrics.bootstrap_macro_f1_95_ci.upper) }}. This confirms strong offline separation but does not establish real-world generalization.
+
+![Confusion matrix](../reports/figures/07_confusion_matrix.png)
+
+## 11. Errors and Slice Analysis
+
+Chemistry is weakest (F1 {{ '%.4f'|format(metrics.per_class.chemistry.f1) }}); mathematics is strongest (F1 {{ '%.4f'|format(metrics.per_class.math.f1) }}). Questions under 100 characters have the highest length-band error rate. These findings suggest targeted data review rather than a global model change.
+
+![Error slices](../reports/figures/10_error_slices.png)
+
+## 12. Feature and Shortcut Analysis
+
+Coefficient inspection shows domain terms but also source-concentrated features. Because source names and subjects are highly confounded, learned lexical cues may not transfer to new providers.
+
+## 13. Learning Curve and Robustness
+
+Validation macro-F1 rises from {{ '%.4f'|format(tables.learning_curve.iloc[0].validation_macro_f1_mean) }} at 20% to {{ '%.4f'|format(tables.learning_curve.iloc[-1].validation_macro_f1_mean) }} at full development size. No source met the predeclared requirement of 80 rows and all four classes, so source holdout is honestly recorded as not feasible.
+
+![Learning curve](../reports/figures/12_learning_curve.png)
+
+## 14. Model Capability Boundaries
+
+This is a **{{ capability }}**. It does not validate real student behavior, educational decisions, calibrated automation, production readiness, non-English inputs, image questions, or guaranteed cross-source generalization. LinearSVC margins are not probabilities; confidence/coverage automation is intentionally not claimed.
+
+## 15. Reproducibility
+
+The dataset revision, configuration, split seed, hashes, SQL, tests, and stage commands are versioned. See [reproducibility.md](reproducibility.md), the evidence matrix, numerical consistency register, and figure source register.
+
+## 16. Intent Annotation Future Work
+
+Intent prediction is deferred because no trustworthy intent label exists. The repository provides a taxonomy and deterministic 40-question pilot template, but does not claim that human annotation, agreement measurement, or an intent model has occurred.
+
+## Conclusion
+
+The workflow demonstrates an end-to-end, auditable ML feasibility study. The model is promising for offline four-subject routing, conditional on source-shift validation and probability calibration before operational automation.

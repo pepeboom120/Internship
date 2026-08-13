@@ -1,0 +1,27 @@
+{
+  "config_hash": "31587bfd17419bff0cef437efa313be4f70fc93731578996076765f9f76fcd5b",
+  "dataset_name": "TIGER-Lab/MMLU-Pro",
+  "dataset_revision": "b189ec765aa7ed75c8acfea42df31fdae71f97be",
+  "license": "MIT (per upstream dataset card; review upstream terms before redistribution)",
+  "required_columns": [
+    "question_id",
+    "question",
+    "options",
+    "answer",
+    "answer_index",
+    "cot_content",
+    "category",
+    "src"
+  ],
+  "retrieved_at": "2026-08-13T02:11:08.065322+00:00",
+  "selected_rows": 4499,
+  "source_file": "data/raw/mmlu_pro_source.parquet",
+  "source_sha256": "971586127eaf2be97bb0bf39273f77793564143446bbc5a6f6ad7e5a0382197a",
+  "source_split": "test",
+  "subject_counts": {
+    "biology": 717,
+    "chemistry": 1132,
+    "math": 1351,
+    "physics": 1299
+  }
+}

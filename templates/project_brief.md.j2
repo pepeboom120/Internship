@@ -1,0 +1,39 @@
+# Project Brief - STEM Subject Classification
+
+## Decision
+
+**Conditional go as a {{ claims.capability_title }}.** A leakage-safe text classifier can route benchmark questions among mathematics, physics, chemistry, and biology, but cross-source generalization and calibrated automation remain unverified.
+
+## Problem and Data
+
+The project tests whether question text alone can support four-class STEM routing. It pinned `{{ source.dataset_name }}` revision `{{ source.dataset_revision }}`, selected {{ claims.source_rows }} rows, removed {{ claims.excluded_rows }} exact duplicates, and retained {{ claims.controlled_rows }} controlled records. Answers, options, and explanations are prohibited model features.
+
+## Workflow
+
+`Pinned data -> validation -> duplicate grouping -> grouped split -> SQLite/SQL -> TF-IDF pipelines -> grouped CV tuning -> locked final test -> diagnostics -> verified report`
+
+## Leakage Controls
+
+- {{ claims.crossing_groups }} duplicate groups cross development and final test.
+- TF-IDF is fitted inside each training fold.
+- {{ claims.parameter_configurations }} candidate parameter configurations are compared using development-only grouped CV.
+- The final test is evaluated once after the model choice and evidence hashes are persisted.
+
+## Verified Results
+
+- Final macro-F1: **{{ claims.macro_f1 }}** (95% bootstrap CI {{ claims.ci_lower }}-{{ claims.ci_upper }})
+- Accuracy: **{{ claims.accuracy }}** ({{ claims.correct_predictions }}/{{ claims.test_rows }})
+- Development grouped-CV macro-F1: **{{ claims.cv_macro_f1 }} +/- {{ claims.cv_std }}**
+- Strongest class: {{ claims.strongest_class }} F1 {{ claims.strongest_f1 }}; weakest: {{ claims.weakest_class }} F1 {{ claims.weakest_f1 }}
+
+## Engineering Evidence
+
+Python package and CLI, {{ claims.sql_query_count }} named SQL analyses, artifact hashes, locked run metadata, automated tests, GitHub Actions, clean-room installation, numerical consistency gates, {{ claims.report_pdf_pages }}-page technical report, and page-level PDF QA.
+
+## Capability Boundaries
+
+This is benchmark evidence, not validation of student behavior or semiconductor manufacturing. LinearSVC margins are not calibrated probabilities. The source is strongly confounded with subject, so production deployment and guaranteed domain transfer are not claimed.
+
+## Review Links
+
+[Repository](https://github.com/pepeboom120/Internship) | [Full report](final_report.pdf) | [Interview guide](interview_guide.md) | [Resume assets](resume_assets.md)
