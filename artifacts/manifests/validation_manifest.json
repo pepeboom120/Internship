@@ -1,0 +1,28 @@
+{
+  "clean_rows": 4408,
+  "config_hash": "31587bfd17419bff0cef437efa313be4f70fc93731578996076765f9f76fcd5b",
+  "crossing_duplicate_groups": 0,
+  "dataset_revision": "b189ec765aa7ed75c8acfea42df31fdae71f97be",
+  "duplicate_groups": 4334,
+  "excluded_rows": 91,
+  "exclusion_counts": {
+    "exact_duplicate": 91
+  },
+  "exclusion_file": "reports/tables/exclusion_register.csv",
+  "exclusion_sha256": "26e2e5a162e8112c9b17280798be57256142c8039072f5000b524642a667db2a",
+  "near_duplicate_threshold": 0.92,
+  "processed_file": "data/processed/questions.parquet",
+  "processed_sha256": "99a38076e19990fbbdb9ff48b08736948b6bda0309ae6248e4f0a4483fd8957b",
+  "source_rows": 4499,
+  "split_counts": {
+    "development": 3778,
+    "test": 630
+  },
+  "stage": "validate",
+  "subject_counts": {
+    "biology": 634,
+    "chemistry": 1132,
+    "math": 1348,
+    "physics": 1294
+  }
+}
