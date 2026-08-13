@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 import sqlite3
 import tempfile
@@ -62,6 +63,121 @@ def execute_named_query(db_path: Path, query_path: Path) -> pd.DataFrame:
         return pd.read_sql_query(query_path.read_text(encoding="utf-8"), connection)
 
 
+def export_named_queries(
+    db_path: Path,
+    query_dir: Path,
+    table_dir: Path,
+    names: set[str] | None = None,
+) -> int:
+    """Export selected named SQL analyses, or all analyses when names is omitted."""
+    table_dir.mkdir(parents=True, exist_ok=True)
+    query_count = 0
+    for query in sorted(query_dir.glob("*.sql")):
+        if names is not None and query.name[:2] not in names:
+            continue
+        execute_named_query(db_path, query).to_csv(
+            table_dir / f"{query.stem}.csv", index=False, encoding="utf-8"
+        )
+        query_count += 1
+    return query_count
+
+
+def load_model_run_and_predictions(
+    db_path: Path,
+    selection: dict,
+    metrics: dict,
+    predictions: pd.DataFrame,
+    random_seed: int,
+) -> tuple[int, int]:
+    """Transactionally replace one external run and its final-test predictions."""
+    with closing(sqlite3.connect(db_path)) as connection:
+        connection.execute("PRAGMA foreign_keys = ON")
+        with connection:
+            existing = connection.execute(
+                "SELECT run_id FROM model_runs WHERE external_run_id = ?",
+                (selection["run_id"],),
+            ).fetchone()
+            if existing:
+                database_run_id = int(existing[0])
+                connection.execute(
+                    "DELETE FROM predictions WHERE run_id = ?", (database_run_id,)
+                )
+                connection.execute(
+                    """
+                    UPDATE model_runs SET model_name = ?, parameters_json = ?,
+                        random_seed = ?, cv_macro_f1 = ?, test_macro_f1 = ?,
+                        test_weighted_f1 = ?, test_accuracy = ?, runtime_seconds = ?,
+                        created_at = ? WHERE run_id = ?
+                    """,
+                    (
+                        selection["selected_model"],
+                        json.dumps(selection["best_params"], sort_keys=True),
+                        random_seed,
+                        selection["cv_macro_f1_mean"],
+                        metrics["macro_f1"],
+                        metrics["weighted_f1"],
+                        metrics["accuracy"],
+                        metrics["runtime_seconds"],
+                        metrics["evaluated_at_utc"],
+                        database_run_id,
+                    ),
+                )
+            else:
+                cursor = connection.execute(
+                    """
+                    INSERT INTO model_runs (
+                        external_run_id, task_name, model_name, parameters_json,
+                        random_seed, cv_macro_f1, test_macro_f1, test_weighted_f1,
+                        test_accuracy, runtime_seconds, created_at
+                    ) VALUES (?, 'subject', ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        selection["run_id"],
+                        selection["selected_model"],
+                        json.dumps(selection["best_params"], sort_keys=True),
+                        random_seed,
+                        selection["cv_macro_f1_mean"],
+                        metrics["macro_f1"],
+                        metrics["weighted_f1"],
+                        metrics["accuracy"],
+                        metrics["runtime_seconds"],
+                        metrics["evaluated_at_utc"],
+                    ),
+                )
+                database_run_id = int(cursor.lastrowid)
+
+            question_ids = dict(
+                connection.execute(
+                    "SELECT source_question_id, question_id FROM questions"
+                ).fetchall()
+            )
+            records = []
+            for row in predictions.itertuples(index=False):
+                source_id = int(row.source_question_id)
+                if source_id not in question_ids:
+                    raise ValueError(f"prediction references unknown question: {source_id}")
+                confidence = None if pd.isna(row.confidence) else float(row.confidence)
+                records.append(
+                    (
+                        database_run_id,
+                        question_ids[source_id],
+                        str(row.true_label),
+                        str(row.predicted_label),
+                        confidence,
+                        int(row.is_correct),
+                    )
+                )
+            connection.executemany(
+                """
+                INSERT INTO predictions (
+                    run_id, question_id, true_label, predicted_label, confidence, is_correct
+                ) VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                records,
+            )
+    return database_run_id, len(records)
+
+
 def build_database_and_export(
     frame: pd.DataFrame, config: ProjectConfig, root: Path = Path(".")
 ) -> dict[str, int]:
@@ -82,12 +198,9 @@ def build_database_and_export(
         if temp_path.exists():
             temp_path.unlink()
 
-    table_dir = root / config.paths.reports / "tables"
-    table_dir.mkdir(parents=True, exist_ok=True)
-    query_count = 0
-    for query in sorted((root / "sql" / "analysis").glob("*.sql")):
-        execute_named_query(target, query).to_csv(
-            table_dir / f"{query.stem}.csv", index=False, encoding="utf-8"
-        )
-        query_count += 1
+    query_count = export_named_queries(
+        target,
+        root / "sql" / "analysis",
+        root / config.paths.reports / "tables",
+    )
     return {"questions_loaded": loaded, "queries_exported": query_count}

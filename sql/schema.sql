@@ -16,6 +16,7 @@ CREATE TABLE questions (
 
 CREATE TABLE model_runs (
     run_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    external_run_id TEXT NOT NULL UNIQUE,
     task_name TEXT NOT NULL CHECK(task_name = 'subject'),
     model_name TEXT NOT NULL,
     parameters_json TEXT NOT NULL,
@@ -45,4 +46,3 @@ CREATE INDEX idx_questions_subject ON questions(subject);
 CREATE INDEX idx_questions_source ON questions(source_name);
 CREATE INDEX idx_questions_split ON questions(split_name);
 CREATE INDEX idx_predictions_run ON predictions(run_id);
-

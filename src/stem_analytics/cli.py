@@ -13,6 +13,7 @@ from stem_analytics.config import load_config
 from stem_analytics.data_ingestion import fetch_and_save
 from stem_analytics.data_validation import validate_and_save
 from stem_analytics.database import build_database_and_export
+from stem_analytics.evaluation import evaluate_and_save
 from stem_analytics.modeling import train_and_save
 
 
@@ -32,6 +33,16 @@ def build_parser() -> argparse.ArgumentParser:
     analyze.add_argument("--config", type=Path, default=Path("configs/project.yaml"))
     train = subparsers.add_parser("train", help="Tune candidates on grouped development folds.")
     train.add_argument("--config", type=Path, default=Path("configs/project.yaml"))
+    evaluate = subparsers.add_parser(
+        "evaluate", help="Evaluate the locked model on the final test set once."
+    )
+    evaluate.add_argument("--config", type=Path, default=Path("configs/project.yaml"))
+    evaluate.add_argument("--run-id")
+    evaluate.add_argument(
+        "--force",
+        action="store_true",
+        help="Explicitly replace an existing final evaluation and record that action.",
+    )
     return parser
 
 
@@ -80,6 +91,16 @@ def main(argv: Sequence[str] | None = None) -> int:
             f"Selected {result.selected_model} with grouped-CV macro-F1 "
             f"{result.selection_decision['cv_macro_f1_mean']:.4f} "
             f"(run {result.run_id})"
+        )
+    elif args.command == "evaluate":
+        config = load_config(args.config)
+        controlled = pd.read_parquet(config.paths.processed_data)
+        metrics, status = evaluate_and_save(
+            controlled, config, run_id=args.run_id, force=args.force
+        )
+        print(
+            f"Final evaluation {status}: {metrics['model_name']} macro-F1 "
+            f"{metrics['macro_f1']:.4f} (run {metrics['run_id']})"
         )
     else:
         parser.print_help()

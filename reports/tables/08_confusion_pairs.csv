@@ -1,1 +1,12 @@
 true_label,predicted_label,confusion_count
+chemistry,physics,18
+physics,chemistry,17
+math,physics,9
+chemistry,math,6
+biology,math,5
+chemistry,biology,5
+physics,biology,5
+biology,chemistry,4
+physics,math,4
+biology,physics,3
+math,chemistry,1
