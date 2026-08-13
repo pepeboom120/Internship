@@ -1,0 +1,5 @@
+subject,n,mean_length,min_length,max_length
+biology,634,156.9,15,656
+chemistry,1132,232.38,16,967
+math,1348,171.11,10,900
+physics,1294,212.58,16,1009

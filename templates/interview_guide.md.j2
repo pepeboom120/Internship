@@ -1,0 +1,53 @@
+# Interview Guide
+
+## 30-Second Pitch
+
+I built a reproducible end-to-end ML feasibility study for routing English STEM questions into four subjects. I started with {{ claims.source_rows }} pinned public records, removed {{ claims.excluded_rows }} exact duplicates, prevented duplicate groups from crossing the split, and compared {{ claims.parameter_configurations }} TF-IDF and linear-model parameter configurations using grouped cross-validation. After locking LinearSVC, it achieved {{ claims.macro_f1 }} macro-F1 and {{ claims.accuracy }} accuracy on {{ claims.test_rows }} isolated test questions. The main value is the auditable workflow: SQL analysis, leakage controls, artifact hashes, error diagnosis, automated tests, clean-room verification, and honest capability boundaries.
+
+## Five-Minute Walkthrough
+
+### Minute 0-1 - Frame the Decision
+
+Open the README result block. Explain that the question was feasibility, not maximum leaderboard accuracy, and that the final classification is a {{ claims.capability_title }}.
+
+### Minute 1-2 - Show Data Trustworthiness
+
+Open `validation_manifest.json` and the split figure. Point out {{ claims.controlled_rows }} retained rows, {{ claims.excluded_rows }} exclusions, and {{ claims.crossing_groups }} duplicate groups crossing the split.
+
+### Minute 2-3 - Explain Model Selection
+
+Open `selection_decision.json` and the model-comparison figure. Explain that TF-IDF lived inside grouped CV and the test set did not select the model.
+
+### Minute 3-4 - Interpret Results and Errors
+
+Open the confusion matrix and error slices. State macro-F1 {{ claims.macro_f1 }}, the interval {{ claims.ci_lower }}-{{ claims.ci_upper }}, weaker {{ claims.weakest_class }} performance, and the {{ claims.short_question_error_rate_percent }} error rate for questions below 100 characters.
+
+### Minute 4-5 - Demonstrate Engineering Judgment
+
+Run `stem-analytics run-all --config configs/project.yaml`, show cached stages, then point to CI, tests, QA registers, and capability limits. End with the next valid experiment: new multi-source data or a separately designed manufacturing-data case, not test-set reuse.
+
+## Likely Technical Questions
+
+### Why macro-F1 instead of accuracy?
+
+The four classes are imbalanced. Macro-F1 gives equal weight to each class, while accuracy can be dominated by larger classes. I still report accuracy and weighted-F1 for context.
+
+### How did you prevent leakage?
+
+I removed exact duplicates before splitting, grouped near duplicates so a group cannot cross the split, fitted TF-IDF inside each fold, used grouped development CV for all choices, and persisted the selection decision before the one-time final evaluation.
+
+### Why LinearSVC?
+
+It had the highest predeclared grouped-CV macro-F1, {{ claims.cv_macro_f1 }}, compared with Logistic Regression and the majority baseline. I did not switch models after seeing the final test.
+
+### What is the most important failure mode?
+
+Source and subject are strongly confounded. The model may learn source-specific vocabulary, and no source has enough examples across all four labels for the predeclared holdout. I record that robustness check as not feasible rather than inventing a score.
+
+### Why not show confidence thresholds?
+
+LinearSVC decision margins are not calibrated probabilities. Presenting them as confidence would be misleading. Calibration would require a separately predeclared validation protocol.
+
+### What would you improve next?
+
+I would first validate on a new multi-source dataset or a separately frozen manufacturing dataset, then evaluate calibration, drift, and operational thresholds without reusing the current final test for model selection.

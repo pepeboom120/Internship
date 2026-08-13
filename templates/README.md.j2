@@ -11,11 +11,11 @@ An evidence-grounded feasibility study that classifies English STEM benchmark qu
 
 ## Result
 
-**Conditional go - Validated Offline Prototype.** The locked linear_svc achieved:
+**Conditional go - {{ claims.capability_title }}.** The locked {{ claims.model_name }} achieved:
 
-- **Macro-F1: 0.8755** (95% stratified bootstrap CI 0.8471-0.8996)
-- **Accuracy: 0.8778** (553/630 final-test predictions correct)
-- **Grouped-CV macro-F1: 0.8807 +/- 0.0171** before the final test was opened
+- **Macro-F1: {{ claims.macro_f1 }}** (95% stratified bootstrap CI {{ claims.ci_lower }}-{{ claims.ci_upper }})
+- **Accuracy: {{ claims.accuracy }}** ({{ claims.correct_predictions }}/{{ claims.test_rows }} final-test predictions correct)
+- **Grouped-CV macro-F1: {{ claims.cv_macro_f1 }} +/- {{ claims.cv_std }}** before the final test was opened
 
 The model is suitable as an offline four-subject routing prototype. It is not evidence of production readiness, student behavior, calibrated confidence, or guaranteed cross-source generalization.
 
@@ -37,7 +37,7 @@ flowchart LR
 ## Review This Project in Five Minutes
 
 1. Read the [one-page project brief](docs/project_brief.pdf) for the problem, workflow, results, and limits.
-2. Inspect the persisted [model selection decision](artifacts/runs/4881283f146d/selection_decision.json) to see how the final model was locked without test access.
+2. Inspect the persisted [model selection decision](artifacts/runs/{{ metrics.run_id }}/selection_decision.json) to see how the final model was locked without test access.
 3. Review the confusion matrix and [error-slice table](reports/tables/error_slices.csv), especially the weaker chemistry class and short-question errors.
 4. Read the [capability boundaries](docs/limitation_register.md) and the explicit `not_feasible` source-holdout result.
 5. Run `stem-analytics run-all --config configs/project.yaml` to see the visible cache and reproducible stage contracts.
@@ -47,16 +47,16 @@ For a spoken walkthrough, use the [interview guide](docs/interview_guide.md). Re
 ## Key Technical Decisions
 
 - Only normalized question text is a feature; answers and explanations are prohibited.
-- 91 exact duplicates were removed and 0 duplicate groups cross the final split.
-- TF-IDF is fitted inside each grouped CV fold; macro-F1 drives selection across 72 candidate configurations.
+- {{ claims.excluded_rows }} exact duplicates were removed and {{ claims.crossing_groups }} duplicate groups cross the final split.
+- TF-IDF is fitted inside each grouped CV fold; macro-F1 drives selection across {{ claims.parameter_configurations }} candidate configurations.
 - The final test set is evaluated once after the selection decision and hashes are persisted.
 - LinearSVC margins are not presented as calibrated probabilities.
 - SQL, manifests, metrics, figures, Markdown, and PDFs derive from controlled artifacts.
 
 ## Findings and Limits
 
-- Chemistry is the weakest class at F1 0.8391; Math is strongest at 0.9361.
-- Questions below 100 characters have a 19.7% error rate.
+- {{ claims.weakest_class }} is the weakest class at F1 {{ claims.weakest_f1 }}; {{ claims.strongest_class }} is strongest at {{ claims.strongest_f1 }}.
+- Questions below 100 characters have a {{ claims.short_question_error_rate_percent }} error rate.
 - Source and subject are strongly confounded, so the predeclared cross-source holdout is not feasible with this dataset.
 - The learning curve continues to improve with additional development data, supporting targeted data collection rather than unsupported model complexity.
 
@@ -89,4 +89,4 @@ Individual stages: `fetch`, `validate`, `build-db`, `analyze`, `train`, `evaluat
 - `artifacts/`: public-safe manifests, locked metrics, and run decisions
 - `tests/`: unit, integration, PDF, and clean-room verification tests
 
-Dataset: `TIGER-Lab/MMLU-Pro` at pinned revision `b189ec765aa7ed75c8acfea42df31fdae71f97be` under the upstream license note. Raw data, SQLite, predictions, and model binaries rebuild locally and are not committed. Code is MIT licensed.
+Dataset: `{{ source.dataset_name }}` at pinned revision `{{ source.dataset_revision }}` under the upstream license note. Raw data, SQLite, predictions, and model binaries rebuild locally and are not committed. Code is MIT licensed.

@@ -1,0 +1,11 @@
+model_name,fold,macro_f1
+logistic_regression,0,0.8856409704553825
+logistic_regression,1,0.8727890732907488
+logistic_regression,2,0.8875414513644413
+logistic_regression,3,0.8564411198363888
+logistic_regression,4,0.8552060459735858
+linear_svc,0,0.8932238022596459
+linear_svc,1,0.8841207759699624
+linear_svc,2,0.9028270297701562
+linear_svc,3,0.8676738052139116
+linear_svc,4,0.8555217354376331

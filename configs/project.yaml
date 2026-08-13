@@ -1,0 +1,29 @@
+project_name: stem-learning-analytics
+random_seed: 42
+subjects: [math, physics, chemistry, biology]
+dataset:
+  name: TIGER-Lab/MMLU-Pro
+  revision: b189ec765aa7ed75c8acfea42df31fdae71f97be
+  source_split: test
+  required_columns: [question_id, question, options, answer, answer_index, cot_content, category, src]
+split:
+  final_test_folds: 7
+  cv_folds: 5
+duplicates:
+  char_ngram_range: [3, 5]
+  cosine_similarity_threshold: 0.92
+models:
+  tfidf_ngram_ranges: [[1, 1], [1, 2]]
+  tfidf_min_df: [1, 2, 5]
+  c_values: [0.1, 1.0, 10.0]
+  class_weights: [null, balanced]
+evaluation:
+  primary_metric: macro_f1
+  bootstrap_iterations: 2000
+paths:
+  raw_data: data/raw/mmlu_pro_source.parquet
+  processed_data: data/processed/questions.parquet
+  database: data/processed/stem_analytics.sqlite
+  artifacts: artifacts
+  reports: reports
+

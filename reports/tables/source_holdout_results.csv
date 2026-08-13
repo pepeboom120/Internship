@@ -1,0 +1,2 @@
+status,held_out_source,n,macro_f1,per_class_recall,reason
+not_feasible,,0,,{},No development source has at least 80 rows and all four target subjects; source is strongly confounded with subject.
