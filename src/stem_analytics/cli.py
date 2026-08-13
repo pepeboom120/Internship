@@ -13,6 +13,7 @@ from stem_analytics.config import load_config
 from stem_analytics.data_ingestion import fetch_and_save
 from stem_analytics.data_validation import validate_and_save
 from stem_analytics.database import build_database_and_export
+from stem_analytics.modeling import train_and_save
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -29,6 +30,8 @@ def build_parser() -> argparse.ArgumentParser:
     database.add_argument("--config", type=Path, default=Path("configs/project.yaml"))
     analyze = subparsers.add_parser("analyze", help="Generate EDA figures and provenance.")
     analyze.add_argument("--config", type=Path, default=Path("configs/project.yaml"))
+    train = subparsers.add_parser("train", help="Tune candidates on grouped development folds.")
+    train.add_argument("--config", type=Path, default=Path("configs/project.yaml"))
     return parser
 
 
@@ -69,6 +72,15 @@ def main(argv: Sequence[str] | None = None) -> int:
             records, config.paths.reports / "qa" / "figure_source_register.csv"
         )
         print(f"Generated {len(records)} verified EDA figures")
+    elif args.command == "train":
+        config = load_config(args.config)
+        controlled = pd.read_parquet(config.paths.processed_data)
+        result = train_and_save(controlled, config)
+        print(
+            f"Selected {result.selected_model} with grouped-CV macro-F1 "
+            f"{result.selection_decision['cv_macro_f1_mean']:.4f} "
+            f"(run {result.run_id})"
+        )
     else:
         parser.print_help()
     return 0
