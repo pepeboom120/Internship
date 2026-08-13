@@ -1,0 +1,17 @@
+datasets<5,>=4.0
+joblib<2,>=1.4
+jinja2<4,>=3.1
+matplotlib<4,>=3.9
+numpy<3,>=2.0
+pandas<3,>=2.2
+pydantic<3,>=2.10
+pyyaml<7,>=6.0
+reportlab<5,>=4.2
+scikit-learn<2,>=1.6
+seaborn<1,>=0.13
+
+[dev]
+pypdf<7,>=5
+pytest<9,>=8
+pytest-cov<8,>=6
+ruff<1,>=0.9

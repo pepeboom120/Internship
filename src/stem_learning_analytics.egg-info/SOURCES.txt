@@ -1,0 +1,13 @@
+LICENSE
+README.md
+pyproject.toml
+src/stem_analytics/__init__.py
+src/stem_analytics/__main__.py
+src/stem_analytics/cli.py
+src/stem_learning_analytics.egg-info/PKG-INFO
+src/stem_learning_analytics.egg-info/SOURCES.txt
+src/stem_learning_analytics.egg-info/dependency_links.txt
+src/stem_learning_analytics.egg-info/entry_points.txt
+src/stem_learning_analytics.egg-info/requires.txt
+src/stem_learning_analytics.egg-info/top_level.txt
+tests/test_package.py

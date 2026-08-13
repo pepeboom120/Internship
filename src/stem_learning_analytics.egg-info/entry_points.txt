@@ -1,0 +1,2 @@
+[console_scripts]
+stem-analytics = stem_analytics.cli:main
