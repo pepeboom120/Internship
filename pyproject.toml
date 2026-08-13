@@ -34,9 +34,8 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-ra"
+addopts = "-ra -p no:cacheprovider --basetemp=.pytest-tmp"
 
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-

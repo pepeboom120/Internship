@@ -3,6 +3,7 @@
 .verify-venv/
 __pycache__/
 .pytest_cache/
+.pytest-tmp/
 .ruff_cache/
 *.py[cod]
 *.egg-info/
@@ -16,6 +17,7 @@ data/processed/*
 artifacts/predictions/*
 artifacts/models/*
 artifacts/runs/**/*.joblib
+artifacts/pytest-tmp/
 *.joblib
 *.sqlite
 *.sqlite3
