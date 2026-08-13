@@ -18,6 +18,7 @@ artifacts/predictions/*
 artifacts/models/*
 artifacts/runs/**/*.joblib
 artifacts/pytest-tmp/
+artifacts/matplotlib-cache/
 *.joblib
 *.sqlite
 *.sqlite3

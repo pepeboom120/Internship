@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pandas as pd
 
+from stem_analytics.analysis import build_eda_figures, write_figure_register
 from stem_analytics.config import load_config
 from stem_analytics.data_ingestion import fetch_and_save
 from stem_analytics.data_validation import validate_and_save
@@ -26,6 +27,8 @@ def build_parser() -> argparse.ArgumentParser:
     validate.add_argument("--config", type=Path, default=Path("configs/project.yaml"))
     database = subparsers.add_parser("build-db", help="Build SQLite and export SQL tables.")
     database.add_argument("--config", type=Path, default=Path("configs/project.yaml"))
+    analyze = subparsers.add_parser("analyze", help="Generate EDA figures and provenance.")
+    analyze.add_argument("--config", type=Path, default=Path("configs/project.yaml"))
     return parser
 
 
@@ -55,6 +58,17 @@ def main(argv: Sequence[str] | None = None) -> int:
             f"Loaded {result['questions_loaded']} questions and exported "
             f"{result['queries_exported']} SQL tables"
         )
+    elif args.command == "analyze":
+        config = load_config(args.config)
+        records = build_eda_figures(
+            config.paths.database,
+            config.paths.reports / "figures",
+            Path("sql/analysis"),
+        )
+        write_figure_register(
+            records, config.paths.reports / "qa" / "figure_source_register.csv"
+        )
+        print(f"Generated {len(records)} verified EDA figures")
     else:
         parser.print_help()
     return 0
