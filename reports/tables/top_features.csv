@@ -1,0 +1,161 @@
+subject,direction,rank,feature,coefficient,exact_source_name_match,dominant_source,source_dominance_ratio,possible_source_shortcut
+math,positive,1,let,2.4473577005954192,False,scibench-stat,0.3757303466178417,False
+math,positive,2,random,1.9196744601860019,False,scibench-stat,0.48060604565287895,False
+math,positive,3,group,1.9123148975277044,False,ori_mmlu-abstract_algebra,0.4965478877659282,False
+math,positive,4,numbers,1.8854927827106276,False,ori_mmlu-high_school_mathematics,0.3433428055017273,False
+math,positive,5,statement,1.8600226547410226,False,ori_mmlu-abstract_algebra,0.6886520830369444,False
+math,positive,6,number,1.8524575936585765,False,ori_mmlu-elementary_mathematics,0.16332168897764265,False
+math,positive,7,what is,1.7361052976449627,False,ori_mmlu-high_school_mathematics,0.09227337929269529,False
+math,positive,8,compute,1.730800489751925,False,scibench-stat,0.34361368330601527,False
+math,positive,9,find,1.6981030837598021,False,scibench-diff,0.13821097551735856,False
+math,positive,10,how many,1.6838333571810205,False,theoremQA-Math,0.14766893586701482,False
+math,positive,11,frac,1.6140230810511011,False,scibench-chemmc,0.3017700115036586,False
+math,positive,12,mathrm ft,1.5911887972679588,False,scibench-calculus,0.9453604603065856,True
+math,positive,13,school,1.5303183926889345,False,ori_mmlu-high_school_statistics,0.7173889786227012,False
+math,positive,14,cost,1.502224412896144,False,ori_mmlu-elementary_mathematics,0.4439899967454954,False
+math,positive,15,probability,1.456040469808474,False,scibench-stat,0.33027167009904496,False
+math,positive,16,suppose,1.4235550097236105,False,scibench-diff,0.16275766515616702,False
+math,positive,17,correct statement,1.378965055946504,False,ori_mmlu-high_school_statistics,0.5441252563536388,False
+math,positive,18,matrix,1.358791833636179,False,ori_mmlu-college_mathematics,0.38643888319982744,False
+math,positive,19,over,1.355943032836347,False,ori_mmlu-elementary_mathematics,0.2786547220441883,False
+math,positive,20,if,1.3455098242239787,False,ori_mmlu-abstract_algebra,0.0933683898152863,False
+math,negative,1,evaluate the,-2.303888110173134,False,scibench-chemmc,0.8378589881565687,True
+math,negative,2,energy,-2.0937941811510212,False,scibench-quan,0.14229066523526734,False
+math,negative,3,of,-1.5716257852405897,False,stemez-Optics,0.040162040749465715,False
+math,negative,4,the series,-1.4126205121248727,False,scibench-chemmc,0.8917175769989844,True
+math,negative,5,cell,-1.4037595343150961,False,scibench-matter,0.17161968128910857,False
+math,negative,6,temperature,-1.3690342597173955,False,scibench-thermo,0.1949093278964653,False
+math,negative,7,explain,-1.3684436297741547,False,stemez-Biology,0.7687170527955213,False
+math,negative,8,charge,-1.3664851604223969,False,scibench-fund,0.6922213507108332,False
+math,negative,9,light,-1.3376776861645627,False,stemez-Optics,0.22885585690375784,False
+math,negative,10,reaction,-1.3274341792082764,False,ori_mmlu-high_school_chemistry,0.21756451682217387,False
+math,negative,11,which one,-1.2718961159242341,False,ori_mmlu-college_chemistry,0.3462760298267563,False
+math,negative,12,quotient 2x,-1.1486352117903091,False,stemez-Chemistry,1.0,True
+math,negative,13,electric,-1.1426706350283757,False,scibench-fund,0.5661101099968221,False
+math,negative,14,calculate,-1.1405361037353678,False,scibench-chemmc,0.13626134624944006,False
+math,negative,15,speed,-1.1320001041152468,False,ori_mmlu-high_school_physics,0.12070016451385271,False
+math,negative,16,why,-1.1271171208785238,False,ori_mmlu-astronomy,0.3360235135889961,False
+math,negative,17,genetic,-1.1096512898590571,False,stemez-Genetics,0.47635650153344994,False
+math,negative,18,sec,-1.0895160953878371,False,stemez-Mechanics,0.5838375785908669,False
+math,negative,19,ph,-1.0893556513959084,False,stemez-OrganicChemistry,0.3508219241147543,False
+math,negative,20,water,-1.0845680286691655,False,scibench-thermo,0.12760189860207544,False
+physics,positive,1,charge,2.677349834386818,False,scibench-fund,0.6922213507108332,False
+physics,positive,2,force,2.253792888037553,False,scibench-fund,0.14552902062807682,False
+physics,positive,3,light,2.159717862232648,False,stemez-Optics,0.22885585690375784,False
+physics,positive,4,speed,2.0619239342175173,False,ori_mmlu-high_school_physics,0.12070016451385271,False
+physics,positive,5,electric,1.9258814572449372,False,scibench-fund,0.5661101099968221,False
+physics,positive,6,solar,1.7667097106066116,False,ori_mmlu-astronomy,0.6551632641221196,False
+physics,positive,7,kg,1.7454670419800145,False,theoremQA-Physics,0.17036547092304086,False
+physics,positive,8,mass,1.7283472319823736,False,scibench-class,0.1532207451991438,False
+physics,positive,9,acceleration,1.6931598689359326,False,ori_mmlu-high_school_physics,0.1969584741929719,False
+physics,positive,10,sound,1.5691827520645758,False,ori_mmlu-conceptual_physics,0.37623742268998395,False
+physics,positive,11,energy,1.5300453123217606,False,scibench-quan,0.14229066523526734,False
+physics,positive,12,power,1.4831446333787686,False,stemez-Optics,0.49395660321288626,False
+physics,positive,13,motion,1.4614444048179518,False,ori_mmlu-high_school_physics,0.2488707718104214,False
+physics,positive,14,earth,1.4361648690863196,False,stemez-Mechanics,0.20156985971671285,False
+physics,positive,15,when,1.396099665026137,False,ori_mmlu-conceptual_physics,0.15137648172257998,False
+physics,positive,16,ft,1.3574373512213247,False,scibench-calculus,0.4658760105397838,False
+physics,positive,17,radius,1.3435234947517591,False,theoremQA-Physics,0.14910168964868148,False
+physics,positive,18,wave,1.3288591041197415,False,stemez-Optics,0.2236469751573486,False
+physics,positive,19,about an,1.3204603593131115,False,ori_mmlu-astronomy,1.0,True
+physics,positive,20,planet,1.3159292140676169,False,ori_mmlu-astronomy,0.6407970246732791,False
+physics,negative,1,mole,-1.4035015851528372,False,stemez-PhysicalChemistry,0.3473220770860505,False
+physics,negative,2,mathrm ft,-1.3396653654513608,False,scibench-calculus,0.9453604603065856,True
+physics,negative,3,let,-1.3286400419942752,False,scibench-stat,0.3757303466178417,False
+physics,negative,4,calculate the,-1.3083139243713966,False,scibench-chemmc,0.15185677175176546,False
+physics,negative,5,mathrm nm,-1.2748464396549035,False,scibench-chemmc,0.5265939109760254,False
+physics,negative,6,calculate,-1.2263448380806354,False,scibench-chemmc,0.13626134624944006,False
+physics,negative,7,given,-1.210732544166619,False,stemez-PhysicalChemistry,0.15223299594236925,False
+physics,negative,8,solution,-1.1370414602406735,False,stemez-Chemistry,0.20529115647535515,False
+physics,negative,9,cell,-1.1081200915134082,False,scibench-matter,0.17161968128910857,False
+physics,negative,10,explain,-1.0796884607542219,False,stemez-Biology,0.7687170527955213,False
+physics,negative,11,reaction,-1.062437794465532,False,ori_mmlu-high_school_chemistry,0.21756451682217387,False
+physics,negative,12,at 25,-1.0532192176128625,False,stemez-PhysicalChemistry,0.38567717873900303,False
+physics,negative,13,probability,-1.0493104614375057,False,scibench-stat,0.33027167009904496,False
+physics,negative,14,number,-1.0414780091970293,False,ori_mmlu-elementary_mathematics,0.16332168897764265,False
+physics,negative,15,ionization,-1.0317427500087004,False,ori_mmlu-high_school_chemistry,0.2852577331376988,False
+physics,negative,16,given that,-1.011187241314792,False,stemez-PhysicalChemistry,0.265430837345611,False
+physics,negative,17,statement,-0.9811721746946155,False,ori_mmlu-abstract_algebra,0.6886520830369444,False
+physics,negative,18,mathrm ev,-0.966222313438406,False,scibench-quan,0.645949906050048,False
+physics,negative,19,cubic,-0.9307894866829244,False,scibench-matter,0.3109065512603913,False
+physics,negative,20,following,-0.926087139072282,False,ori_mmlu-high_school_biology,0.1586743112507957,False
+chemistry,positive,1,reaction,2.6560629466409154,False,ori_mmlu-high_school_chemistry,0.21756451682217387,False
+chemistry,positive,2,calculate,2.4939933989774876,False,scibench-chemmc,0.13626134624944006,False
+chemistry,positive,3,mole,2.408186301730123,False,stemez-PhysicalChemistry,0.3473220770860505,False
+chemistry,positive,4,evaluate the,2.371469893563316,False,scibench-chemmc,0.8378589881565687,True
+chemistry,positive,5,solution,2.336776819716012,False,stemez-Chemistry,0.20529115647535515,False
+chemistry,positive,6,ph,1.9018958832208623,False,stemez-OrganicChemistry,0.3508219241147543,False
+chemistry,positive,7,liquid,1.8905977434812191,False,stemez-OrganicChemistry,0.3429125315665938,False
+chemistry,positive,8,gas,1.8562353895695847,False,scibench-atkins,0.24082733948220872,False
+chemistry,positive,9,which one,1.8455255726863973,False,ori_mmlu-college_chemistry,0.3462760298267563,False
+chemistry,positive,10,calculate the,1.8341982361887776,False,scibench-chemmc,0.15185677175176546,False
+chemistry,positive,11,bond,1.800363202653916,False,scibench-quan,0.3668502860754888,False
+chemistry,positive,12,ml,1.702355902250128,False,stemez-Chemistry,0.37182470056379024,False
+chemistry,positive,13,acid,1.6646033125596473,False,ori_mmlu-high_school_chemistry,0.37064420045943086,False
+chemistry,positive,14,concentration,1.6637123989265232,False,stemez-OrganicChemistry,0.40622768044087076,False
+chemistry,positive,15,cubic,1.618666774625307,False,scibench-matter,0.3109065512603913,False
+chemistry,positive,16,chemist,1.6110917983896662,False,stemez-Chemistry,0.8808319451608675,True
+chemistry,positive,17,ion,1.6008137749704585,False,stemez-OrganicChemistry,0.3930773341968821,False
+chemistry,positive,18,h_2,1.5801152858685663,False,stemez-PhysicalChemistry,0.5750934333846129,False
+chemistry,positive,19,at 25,1.558948057401292,False,stemez-PhysicalChemistry,0.38567717873900303,False
+chemistry,positive,20,chlorine,1.5324986149277553,False,stemez-OrganicChemistry,0.5684323734639569,False
+chemistry,negative,1,the binding,-1.3167004648988758,False,theoremQA-Physics,0.536381056509585,False
+chemistry,negative,2,atom in,-1.1077072227028408,False,ori_mmlu-college_physics,0.36244403074717074,False
+chemistry,negative,3,force,-1.0491168134224247,False,scibench-fund,0.14552902062807682,False
+chemistry,negative,4,charge,-1.004734195378681,False,scibench-fund,0.6922213507108332,False
+chemistry,negative,5,mathrm _2,-0.995462330073708,False,scibench-thermo,0.4891980744209939,False
+chemistry,negative,6,find the,-0.9794070752494152,False,scibench-diff,0.1418034435123782,False
+chemistry,negative,7,298 mathrm,-0.9634175434204262,False,scibench-thermo,0.4926873466533615,False
+chemistry,negative,8,bar,-0.9564404450571188,False,scibench-thermo,0.29544003082815257,False
+chemistry,negative,9,numbers,-0.903928590985817,False,ori_mmlu-high_school_mathematics,0.3433428055017273,False
+chemistry,negative,10,except,-0.8785948934044513,False,ori_mmlu-college_biology,0.5226380683931333,False
+chemistry,negative,11,ft,-0.862124710094083,False,scibench-calculus,0.4658760105397838,False
+chemistry,negative,12,solve the,-0.8612760523237004,False,ori_mmlu-elementary_mathematics,0.44195767148584525,False
+chemistry,negative,13,mev,-0.848369761338219,False,theoremQA-Physics,0.9657340883489355,True
+chemistry,negative,14,25 mathrm,-0.8457746337005846,False,scibench-thermo,0.35804855903310345,False
+chemistry,negative,15,has volume,-0.8446839104270365,False,stemez-Physics,1.0,True
+chemistry,negative,16,substance is,-0.8217607101184758,False,scibench-thermo,0.7157123709979277,False
+chemistry,negative,17,which of,-0.8213440908136193,False,ori_mmlu-high_school_biology,0.18381818643645975,False
+chemistry,negative,18,x_,-0.8103719905956083,False,scibench-thermo,0.5318084351553897,False
+chemistry,negative,19,circ,-0.8026385523230563,False,scibench-thermo,0.31069558539769554,False
+chemistry,negative,20,with kineticenergy,-0.7970150861120486,False,stemez-Physics,1.0,True
+biology,positive,1,explain,2.762700477930248,False,stemez-Biology,0.7687170527955213,False
+biology,positive,2,gene,2.230135694802812,False,stemez-Genetics,0.7097823329095977,False
+biology,positive,3,plants,1.9790505137901213,False,ori_mmlu-college_biology,0.4412620386060643,False
+biology,positive,4,describe,1.925225444226006,False,stemez-Biology,0.5846714567638096,False
+biology,positive,5,plant,1.851896803994362,False,ori_mmlu-college_biology,0.5027772149007982,False
+biology,positive,6,genetic,1.8306487167070808,False,stemez-Genetics,0.47635650153344994,False
+biology,positive,7,why,1.6904370377874693,False,ori_mmlu-astronomy,0.3360235135889961,False
+biology,positive,8,species,1.6479966709454412,False,ori_mmlu-college_biology,0.3351407461010434,False
+biology,positive,9,distinguish,1.6148758309827032,False,stemez-Biology,0.8624584153324366,True
+biology,positive,10,cells,1.5460804223207616,False,ori_mmlu-college_biology,0.46308350939424175,False
+biology,positive,11,cell,1.533898049073406,False,scibench-matter,0.17161968128910857,False
+biology,positive,12,evolution,1.4874054676250705,False,ori_mmlu-high_school_biology,0.5311946474617814,False
+biology,positive,13,mutation,1.4690212397623537,False,ori_mmlu-college_biology,0.3991835359766866,False
+biology,positive,14,population,1.4352666111009864,False,stemez-Genetics,0.21641314094609498,False
+biology,positive,15,organism,1.4202001239873212,False,ori_mmlu-college_biology,0.39564678858776886,False
+biology,positive,16,variation,1.412032142144794,False,ori_mmlu-high_school_biology,0.5836090213882211,False
+biology,positive,17,dna,1.360950836746136,False,ori_mmlu-college_biology,0.38744461049743284,False
+biology,positive,18,blood,1.336526658652691,False,stemez-Genetics,0.33057399889914874,False
+biology,positive,19,animal,1.3175223192912051,False,stemez-Biology,0.4195723800272998,False
+biology,positive,20,describe the,1.3119156516605142,False,stemez-Biology,0.5674739521755564,False
+biology,negative,1,10,-1.482654980374196,False,stemez-Physics,0.0819816922863709,False
+biology,negative,2,is true,-1.4808344085079046,False,ori_mmlu-high_school_statistics,0.19649617022405955,False
+biology,negative,3,at,-1.3965366108222006,False,scibench-thermo,0.0905952337648855,False
+biology,negative,4,how many,-1.3842853702335167,False,theoremQA-Math,0.14766893586701482,False
+biology,negative,5,correct statement,-1.3581193258741195,False,ori_mmlu-high_school_statistics,0.5441252563536388,False
+biology,negative,6,is,-1.192654444201922,False,ori_mmlu-college_mathematics,0.04841129293781323,False
+biology,negative,7,mass,-1.135514576574396,False,scibench-class,0.1532207451991438,False
+biology,negative,8,find,-1.1121497554783364,False,scibench-diff,0.13821097551735856,False
+biology,negative,9,atom,-1.0476178614509009,False,ori_mmlu-high_school_chemistry,0.13982016595116084,False
+biology,negative,10,sample,-1.009074951281219,False,scibench-stat,0.24802379439064387,False
+biology,negative,11,mathrm,-0.985292712538274,False,scibench-atkins,0.16560688757134,False
+biology,negative,12,many,-0.9713240999736853,False,theoremQA-Math,0.1328390265251298,False
+biology,negative,13,true,-0.9712318632037373,False,ori_mmlu-college_mathematics,0.17497975356155523,False
+biology,negative,14,per,-0.86716500757926,False,stemez-Physics,0.10014975285824004,False
+biology,negative,15,gas,-0.8639603051571881,False,scibench-atkins,0.24082733948220872,False
+biology,negative,16,find the,-0.8398948211664381,False,scibench-diff,0.1418034435123782,False
+biology,negative,17,calculate,-0.8253760049913792,False,scibench-chemmc,0.13626134624944006,False
+biology,negative,18,calcium atom,-0.82376349907112,False,ori_mmlu-high_school_chemistry,1.0,True
+biology,negative,19,if,-0.8187325198358711,False,ori_mmlu-abstract_algebra,0.0933683898152863,False
+biology,negative,20,equal,-0.8074986447300907,False,scibench-stat,0.10907907273252777,False

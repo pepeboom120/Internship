@@ -1,0 +1,11 @@
+outcome,source_question_id,true_label,predicted_label,source_name,text_length,confidence,decision_score,question_excerpt
+incorrect,3291,biology,math,stemez-Genetics,33,,-0.2931387562383669,What is the heat shock response ?
+incorrect,3629,chemistry,math,ori_mmlu-high_school_chemistry,41,,-0.3006194324241632,The Pauli exclusion principle states that
+incorrect,8229,math,chemistry,ori_mmlu-high_school_statistics,33,,-0.4248532865035646,An outlier is an observation that
+incorrect,10299,physics,biology,ori_mmlu-astronomy,20,,-0.3859696646407414,The lunar maria are:
+incorrect,3353,biology,chemistry,stemez-Genetics,248,,-0.2409456765508182,"Referring to the independent random mating scheme of the previous problem, find the offspring genotype probabilities of the following two populations: (a) AA Aa aa Males 600 0 400 Females 400 400 200 (b) AA Aa aa Males 400 400 200 Females 2"
+correct,3409,biology,biology,stemez-Genetics,68,,1.6447014104085458,Explain the mechanism of the genetic determination of sex in humans.
+correct,3714,chemistry,chemistry,stemez-PhysicalChemistry,425,,2.5329550185173115,Consider the reaction 2SO_2(g) + O_2(g) \rightleftarrows 2SO_3(g) : Initially 0.100 moles of SO_2 and 0.100 moles of SO_3 are present in a 2.00 liter flask at a temperature of 27°C. Equilibrium is attained at a pressure of 2.78 atm. Calcula
+correct,9017,math,math,ori_mmlu-high_school_mathematics,72,,2.0218818184686023,"If $f(x) = 2$ for all real numbers $x$, what is the value of $f(x + 2)$?"
+correct,10033,physics,physics,stemez-Physics,304,,2.141550749430776,"Two trains moving along parallel tracks in opposite directions converge on a stationary observer, each sounding its whistle of frequency 350 cycles. s^-1. One train is traveling at 50 mph. What must be the speed of the other if the observer"
+correct,3157,biology,biology,ori_mmlu-high_school_biology,126,,1.3968555820752444,"Most animal cells, regardless of species, are relatively small and about the same size. Relative to larger cells, why is this?"

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from collections.abc import Sequence
 from pathlib import Path
 
@@ -13,7 +14,8 @@ from stem_analytics.config import load_config
 from stem_analytics.data_ingestion import fetch_and_save
 from stem_analytics.data_validation import validate_and_save
 from stem_analytics.database import build_database_and_export
-from stem_analytics.evaluation import evaluate_and_save
+from stem_analytics.error_analysis import diagnose_and_save
+from stem_analytics.evaluation import evaluate_and_save, find_selection_decision
 from stem_analytics.modeling import train_and_save
 
 
@@ -43,6 +45,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Explicitly replace an existing final evaluation and record that action.",
     )
+    diagnose = subparsers.add_parser(
+        "diagnose", help="Generate post-lock diagnostic evidence and figures."
+    )
+    diagnose.add_argument("--config", type=Path, default=Path("configs/project.yaml"))
+    diagnose.add_argument("--run-id")
     return parser
 
 
@@ -101,6 +108,27 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(
             f"Final evaluation {status}: {metrics['model_name']} macro-F1 "
             f"{metrics['macro_f1']:.4f} (run {metrics['run_id']})"
+        )
+    elif args.command == "diagnose":
+        config = load_config(args.config)
+        controlled = pd.read_parquet(config.paths.processed_data)
+        selection_path = find_selection_decision(config.paths.artifacts, args.run_id)
+        selection = json.loads(selection_path.read_text(encoding="utf-8"))
+        metrics = json.loads(
+            (config.paths.artifacts / "metrics" / "final_test_metrics.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        predictions = pd.read_csv(
+            config.paths.artifacts / "predictions" / "final_test_predictions.csv"
+        )
+        result = diagnose_and_save(
+            controlled, selection, predictions, metrics, config
+        )
+        print(
+            f"Generated {result['diagnostic_tables']} diagnostic tables and "
+            f"{result['model_figures']} figures; source holdout "
+            f"{result['source_holdout_status']}"
         )
     else:
         parser.print_help()
