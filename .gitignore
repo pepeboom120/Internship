@@ -22,6 +22,7 @@ artifacts/runs/**/*.joblib
 artifacts/pytest-tmp/
 artifacts/matplotlib-cache/
 reports/qa/pdf_pages/
+reports/qa/project_brief_pages/
 *.joblib
 *.sqlite
 *.sqlite3
